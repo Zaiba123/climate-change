@@ -39,5 +39,22 @@ if number:
 
 
 
+st.write('---------------------------------------------')
+
+st.markdown('''** Take a Break with a Funny Joke ** ''')
+
+joke_body = requests.get('https://official-joke-api.appspot.com/random_joke').json()
+
+joke_body
+
+set_up_joke = joke_body['setup']
+punch_line = joke_body['punchline']
+
+jokes= st.button('Random Joke', key="3")
+if jokes:
+    st.write(set_up_joke)
+    st.write(punch_line)
+    
+
 
 
