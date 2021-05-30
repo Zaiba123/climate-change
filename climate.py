@@ -57,25 +57,35 @@ st.header('Enjoy these Art pieces')
 
 
 
-art_number = st.slider('Art Number', 1, 1000)
+art_number = st.slider('Art Number', 1, 2000)
 
 art_url= f'https://collectionapi.metmuseum.org/public/collection/v1/objects/{art_number}'
 
 art = requests.get(art_url).json()
-
+# art_image = ''
 art_image = art['primaryImage']
 art_title = art['title']
 art_department = art['department']
 artist = art['artistDisplayName']
-# art_image
-if art_image:
-    st.image(
-                art_image,
-                width=400, # Manually Adjust the width of the image as per requirement
-            )
-    st.write('Title: ' +art_title)
-    st.write('Department: ' + art_department)
-    if artist: st.write('Artist: ' + artist)
+art_culture = art['culture']
+art_highlight = art['isPublicDomain']
+art_objectid = art['objectID']
 
-else:
+st.write(art_highlight)
+st.write(art_objectid)
+# art_image
+if art['objectID']:
+    if art_image:
+        st.image(
+                    art_image,
+                    width=400, # Manually Adjust the width of the image as per requirement
+                )
+    if art_title: st.write('Title: ' +art_title)
+    if art_department: st.write('Department: ' + art_department)
+    if artist: st.write('Artist: ' + artist)
+    if art_culture: st.write('Culture: ' + art_culture)
+
+elif not art['objectID']:
     st.error("Sorry no image available")
+
+st.header('Search For An Art Work')
