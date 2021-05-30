@@ -55,14 +55,22 @@ st.write('---------------------------------------------')
 
 st.header('Enjoy these Art pieces')
 
-art_number = 79
+
+
+art_number = st.slider('Art Number', 1, 1000)
+
 art_url= f'https://collectionapi.metmuseum.org/public/collection/v1/objects/{art_number}'
 
 art = requests.get(art_url).json()
 
 art_image = art['primaryImage']
-
-st.image(
-            art_image,
-            width=400, # Manually Adjust the width of the image as per requirement
-        )
+art_title = art['title']
+# art_image
+if art_image:
+    st.image(
+                art_image,
+                width=400, # Manually Adjust the width of the image as per requirement
+            )
+    st.write(art_title)
+else:
+    st.error("Sorry no image available")
