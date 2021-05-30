@@ -9,11 +9,12 @@ import requests
 from PIL import Image
 import urllib.request
 import numpy as np
+import random
 
 st.title('All in One Application')
 
 
-st.sidebar.header('User Input Features')
+# st.sidebar.header('User Input Features')
 
 url = 'http://numbersapi.com/random/year'
 
@@ -57,19 +58,24 @@ st.header('Enjoy these Art pieces')
 
 
 
-art_number = st.slider('Art Number', 1, 2000)
+art_number = st.slider('Art Number', 1, 4000)
 
 art_url= f'https://collectionapi.metmuseum.org/public/collection/v1/objects/{art_number}'
 
 art = requests.get(art_url).json()
 # art_image = ''
-art_image = art['primaryImage']
-art_title = art['title']
-art_department = art['department']
-artist = art['artistDisplayName']
-art_culture = art['culture']
-art_highlight = art['isPublicDomain']
+
 art_objectid = art['objectID']
+
+if art_objectid:
+    art_image = art['primaryImage']
+    art_title = art['title']
+    art_department = art['department']
+    artist = art['artistDisplayName']
+    art_culture = art['culture']
+    art_highlight = art['isPublicDomain']
+
+
 
 st.write(art_highlight)
 st.write(art_objectid)
@@ -88,4 +94,31 @@ if art['objectID']:
 elif not art['objectID']:
     st.error("Sorry no image available")
 
+
+
 st.header('Search For An Art Work')
+art_word = st.text_input("Enter a word of an art you would like to see")
+search_art_url = f'https://collectionapi.metmuseum.org/public/collection/v1/search?q={art_word}'
+
+art_search_request = requests.get(search_art_url).json()
+total_art_pieces = art_search_request['total']
+
+searched_art_list = [] #ids of all the art from search 
+# art_search_request
+total_art_pieces
+# art_search_request[1][5]
+for k,v in art_search_request.items():
+    #print(k,v)
+    searched_art_list.append(v)
+
+for i in searched_art_list[1][:5]:
+    print(i)
+
+# searched_art_list
+
+    # st.image(
+    #                 art_search_request[i]["objectIDs"],
+    #                 width=400, # Manually Adjust the width of the image as per requirement
+    #             )
+
+
