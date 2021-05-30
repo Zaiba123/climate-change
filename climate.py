@@ -105,9 +105,12 @@ if art_word:
     total_art_pieces
     for k,v in art_search_request.items():
         #print(k,v)
-        searched_art_list.append(v)
+        if v not in searched_art_list:
+            searched_art_list.append(v)
 
+    # searched_art_list = set(searched_art_list)
     for i in searched_art_list[1][:5]:
-        SelectArt(i)
+        set(SelectArt(i))
+        # print(i)
 
 
