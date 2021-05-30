@@ -1,3 +1,4 @@
+import re
 import streamlit as st
 import pandas as pd
 import base64
@@ -13,15 +14,9 @@ st.title('All in One Application')
 
 st.sidebar.header('User Input Features')
 
-# g = geocoder.ip('me')
-
-# latitude = g.latlng[0]
-# longitude = g.latlng[1]
-
-
 url = 'http://numbersapi.com/random/year'
 
-st.markdown('''**Here is a fun fact about a random number**''')
+st.header('Here is a fun fact about a random number')
 random= st.button('learn about a random number', key="1")
 if random:
     st.write(requests.get(url).text)
@@ -41,11 +36,11 @@ if number:
 
 st.write('---------------------------------------------')
 
-st.markdown('''** Take a Break with a Funny Joke ** ''')
+st.header('Take a Break with a Funny Joke')
 
 joke_body = requests.get('https://official-joke-api.appspot.com/random_joke').json()
 
-joke_body
+# joke_body
 
 set_up_joke = joke_body['setup']
 punch_line = joke_body['punchline']
@@ -55,6 +50,7 @@ if jokes:
     st.write(set_up_joke)
     st.write(punch_line)
     
+st.write('---------------------------------------------')
 
-
+st.header('Enjoy these Art pieces')
 
