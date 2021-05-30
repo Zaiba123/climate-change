@@ -65,12 +65,17 @@ art = requests.get(art_url).json()
 
 art_image = art['primaryImage']
 art_title = art['title']
+art_department = art['department']
+artist = art['artistDisplayName']
 # art_image
 if art_image:
     st.image(
                 art_image,
                 width=400, # Manually Adjust the width of the image as per requirement
             )
-    st.write(art_title)
+    st.write('Title: ' +art_title)
+    st.write('Department: ' + art_department)
+    if artist: st.write('Artist: ' + artist)
+
 else:
     st.error("Sorry no image available")
