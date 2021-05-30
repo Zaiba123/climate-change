@@ -1,4 +1,4 @@
-import re
+from requests.api import request
 import streamlit as st
 import pandas as pd
 import base64
@@ -6,7 +6,8 @@ import geocoder
 import matplotlib.pyplot as plt
 import seaborn as sns
 import requests 
-
+from PIL import Image
+import urllib.request
 import numpy as np
 
 st.title('All in One Application')
@@ -54,3 +55,14 @@ st.write('---------------------------------------------')
 
 st.header('Enjoy these Art pieces')
 
+art_number = 79
+art_url= f'https://collectionapi.metmuseum.org/public/collection/v1/objects/{art_number}'
+
+art = requests.get(art_url).json()
+
+art_image = art['primaryImage']
+
+st.image(
+            art_image,
+            width=400, # Manually Adjust the width of the image as per requirement
+        )
