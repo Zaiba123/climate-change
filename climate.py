@@ -69,7 +69,6 @@ def SelectArt(art_id):
     if art['objectID'] is None:
         st.error("Sorry Art Work with this ID is available")
 
-        
     else:
         art_image = art['primaryImage']
         art_title = art['title']
@@ -84,14 +83,18 @@ def SelectArt(art_id):
                             width=400, # Manually Adjust the width of the image as per requirement
                         )
             if art_title: st.write('Title: ' +art_title)
+            else: st.write('Title Unknown ')
             if art_department: st.write('Department: ' + art_department)
+            else: st.write('Department Unknown ')
             if artist: st.write('Artist: ' + artist)
-            if art_culture: st.write('Culture: ' + art_culture)
+            else: st.write('Artist Unknown ')
+            if art_culture: st.write('Culture: ' + art_culture) 
+            else: st.write('Culture Unknown ')
         elif not art_image:
             st.error("Sorry no image available")
     
-
-# SelectArt(art_number)
+if art_number:
+    SelectArt(art_number)
 
 st.header('Search For An Art Work')
 art_word = st.text_input("Enter a word of an art you would like to see")
@@ -104,13 +107,12 @@ if art_word:
     searched_art_list = [] #ids of all the art from search 
     total_art_pieces
     for k,v in art_search_request.items():
-        #print(k,v)
         if v not in searched_art_list:
             searched_art_list.append(v)
 
-    # searched_art_list = set(searched_art_list)
-    for i in searched_art_list[1][:5]:
-        set(SelectArt(i))
-        # print(i)
+
+    for i in searched_art_list[1][:6]:
+        if SelectArt(i) is not None:
+            SelectArt(i)
 
 
