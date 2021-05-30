@@ -111,8 +111,27 @@ for k,v in art_search_request.items():
     #print(k,v)
     searched_art_list.append(v)
 
+
+def SelectArt(art_id):
+    art_url= f'https://collectionapi.metmuseum.org/public/collection/v1/objects/{art_id}'
+
+    art = requests.get(art_url).json()
+    # art_image = ''
+
+    art_objectid = art['objectID']
+
+    if art_objectid:
+        art_image = art['primaryImage']
+        art_title = art['title']
+        art_department = art['department']
+        artist = art['artistDisplayName']
+        art_culture = art['culture']
+        art_highlight = art['isPublicDomain']
+
+
 for i in searched_art_list[1][:5]:
-    print(i)
+    SelectArt(str(i))
+    print('this is i: ' + str(i))
 
 # searched_art_list
 
