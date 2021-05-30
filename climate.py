@@ -66,7 +66,7 @@ def SelectArt(art_id):
     art = requests.get(art_url).json()
 
 
-    if art['objectID'] is None:
+    if not art['objectID']:
         st.error("Sorry Art Work with this ID is available")
 
     else:
@@ -80,16 +80,16 @@ def SelectArt(art_id):
             if art_image:
                 st.image(
                             art_image,
-                            width=400, # Manually Adjust the width of the image as per requirement
+                            width=200, # Manually Adjust the width of the image as per requirement
                         )
-            if art_title: st.write('Title: ' +art_title)
-            else: st.write('Title Unknown ')
-            if art_department: st.write('Department: ' + art_department)
-            else: st.write('Department Unknown ')
-            if artist: st.write('Artist: ' + artist)
-            else: st.write('Artist Unknown ')
-            if art_culture: st.write('Culture: ' + art_culture) 
-            else: st.write('Culture Unknown ')
+            # if art_title: st.write('Title: ' +art_title)
+            # else: st.write('Title Unknown ')
+            # if art_department: st.write('Department: ' + art_department)
+            # else: st.write('Department Unknown ')
+            # if artist: st.write('Artist: ' + artist)
+            # else: st.write('Artist Unknown ')
+            # if art_culture: st.write('Culture: ' + art_culture) 
+            # else: st.write('Culture Unknown ')
         elif not art_image:
             st.error("Sorry no image available")
     
@@ -111,8 +111,29 @@ if art_word:
             searched_art_list.append(v)
 
 
-    for i in searched_art_list[1][:6]:
-        if SelectArt(i) is not None:
-            SelectArt(i)
+    # col1, col2,col3 = st.beta_columns((2,1,1))
+    # col1.write(SelectArt(searched_art_list[1][0])),col2.write(SelectArt(searched_art_list[1][2])),  col3.write(SelectArt(searched_art_list[1][3]))
+    
+    col1, col2 = st.beta_columns(2)
+    
+    for i in searched_art_list[1][0:3]:
+        art_url= f'https://collectionapi.metmuseum.org/public/collection/v1/objects/{i}'
+        art = requests.get(art_url).json()
+        art_image = art['primaryImage']
+        with col1:
+            st.image(art_image)
+            
+    for i in searched_art_list[1][3:6]:
+        art_url= f'https://collectionapi.metmuseum.org/public/collection/v1/objects/{i}'
+        art = requests.get(art_url).json()
+        art_image = art['primaryImage']
+
+        with col2:
+            st.image(art_image)
+            
+     
+            
+
+            
 
 
