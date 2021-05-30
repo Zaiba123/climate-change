@@ -56,7 +56,7 @@ st.write('---------------------------------------------')
 
 st.header('Enjoy these Art pieces')
 
-
+st.markdown('''**Move the slider to see an art piece** ''')
 
 art_number = st.slider('Art Number', 1, 4000)
 def SelectArt(art_id):
@@ -65,80 +65,49 @@ def SelectArt(art_id):
 
     art = requests.get(art_url).json()
 
-    art_objectid = art['objectID']
 
-    if art_objectid:
+    if art['objectID'] is None:
+        st.error("Sorry Art Work with this ID is available")
+
+        
+    else:
         art_image = art['primaryImage']
         art_title = art['title']
         art_department = art['department']
         artist = art['artistDisplayName']
         art_culture = art['culture']
 
-    if art['objectID']:
         if art_image:
-            st.image(
-                        art_image,
-                        width=400, # Manually Adjust the width of the image as per requirement
-                    )
-        if art_title: st.write('Title: ' +art_title)
-        if art_department: st.write('Department: ' + art_department)
-        if artist: st.write('Artist: ' + artist)
-        if art_culture: st.write('Culture: ' + art_culture)
-    elif not art['objectID']:
-        st.error("Sorry no image available")
-SelectArt(art_number)
-'''
-art_url= f'https://collectionapi.metmuseum.org/public/collection/v1/objects/{art_number}'
+            if art_image:
+                st.image(
+                            art_image,
+                            width=400, # Manually Adjust the width of the image as per requirement
+                        )
+            if art_title: st.write('Title: ' +art_title)
+            if art_department: st.write('Department: ' + art_department)
+            if artist: st.write('Artist: ' + artist)
+            if art_culture: st.write('Culture: ' + art_culture)
+        elif not art_image:
+            st.error("Sorry no image available")
+    
 
-art = requests.get(art_url).json()
-# art_image = ''
-
-art_objectid = art['objectID']
-
-if art_objectid:
-    art_image = art['primaryImage']
-    art_title = art['title']
-    art_department = art['department']
-    artist = art['artistDisplayName']
-    art_culture = art['culture']
-    art_highlight = art['isPublicDomain']
-
-
-
-art_image
-if art['objectID']:
-    if art_image:
-        st.image(
-                    art_image,
-                    width=400, # Manually Adjust the width of the image as per requirement
-                )
-    if art_title: st.write('Title: ' +art_title)
-    if art_department: st.write('Department: ' + art_department)
-    if artist: st.write('Artist: ' + artist)
-    if art_culture: st.write('Culture: ' + art_culture)
-
-elif not art['objectID']:
-    st.error("Sorry no image available")
-
-'''
+# SelectArt(art_number)
 
 st.header('Search For An Art Work')
 art_word = st.text_input("Enter a word of an art you would like to see")
 search_art_url = f'https://collectionapi.metmuseum.org/public/collection/v1/search?q={art_word}'
 
-art_search_request = requests.get(search_art_url).json()
-total_art_pieces = art_search_request['total']
+if art_word:
+    art_search_request = requests.get(search_art_url).json()
+    total_art_pieces = art_search_request['total']
 
-searched_art_list = [] #ids of all the art from search 
-# art_search_request
-total_art_pieces
-# art_search_request[1][5]
-for k,v in art_search_request.items():
-    #print(k,v)
-    searched_art_list.append(v)
+    searched_art_list = [] #ids of all the art from search 
+    total_art_pieces
+    for k,v in art_search_request.items():
+        #print(k,v)
+        searched_art_list.append(v)
 
+    for i in searched_art_list[1][:5]:
+        SelectArt(i)
 
-
-for i in searched_art_list[1][:5]:
-    SelectArt(i)
 
