@@ -110,6 +110,7 @@ if art_word:
 
     searched_art_list = [] #ids of all the art from search 
     total_art_pieces
+
     for k,v in art_search_request.items():
         #appends unique art ids
         if v not in searched_art_list:
@@ -145,7 +146,18 @@ if art_word:
     for i in searched_art_list[1][7:10]:
         ArtAPI(i,col3)
             
-     
+st.write('---------------------------------------------')
+
+# url = 'https://random.dog/woof.json'
+dog_image_link = []
+random_dog_request = requests.get('https://random.dog/woof.json').json()
+random_dog_request
+for i in random_dog_request.values():
+    dog_image_link.append(i)
+dog_image_link[1]
+
+
+
             
 
             
