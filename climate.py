@@ -119,45 +119,44 @@ if art_word:
             searched_art_list.append(v)
 
 
-    col1, col2, col3 = st.beta_columns(3)
+    
     
 
     # ArtPieces(3689)
     # @st.cache
-    def LearnMore(id):
-        learn_more = st.checkbox("Learn More",key=id)
-        if learn_more:
-                if  art['artistDisplayName']: st.write('Artist: ' + art['artistDisplayName'])
-                else: st.write('Artist Unknown ')
-                if art['culture']: st.write('Culture: ' + art['culture']) 
-                else: st.write('Culture Unknown ')
+    # def LearnMore(id):
+    #     learn_more = st.checkbox("Learn More",key=id)
+    #     if learn_more:
+    #             if  art['artistDisplayName']: st.write('Artist: ' + art['artistDisplayName'])
+    #             else: st.write('Artist Unknown ')
+    #             if art['culture']: st.write('Culture: ' + art['culture']) 
+    #             else: st.write('Culture Unknown ')
+
+    col1, col2, col3 = st.beta_columns(3)
+    def ArtAPI(id,col):
+        art_url= f'https://collectionapi.metmuseum.org/public/collection/v1/objects/{id}'
+        art = requests.get(art_url).json()
+        with col:
+            st.image(art['primaryImage'],caption=art['title'])
+            learn_more = st.checkbox("Learn More",key=id)
+            if learn_more:
+                    if art['artistDisplayName']: st.write('Artist: ' + art['artistDisplayName'])
+                    else: st.write('Artist Unknown ')
+                    if art['culture']: st.write('Culture: ' + art['culture']) 
+                    else: st.write('Culture Unknown ')
+        
+
+
     
     for i in searched_art_list[1][0:4]:
-        art_url= f'https://collectionapi.metmuseum.org/public/collection/v1/objects/{i}'
-        art = requests.get(art_url).json()
-        art_image = art['primaryImage']
-        with col1:
-            st.image(art_image,caption=art['title'])
-            LearnMore(i)
+        ArtAPI(i,col1)
         
             
     for i in searched_art_list[1][4:7]:
-        # art_url= f'https://collectionapi.metmuseum.org/public/collection/v1/objects/{i}'
-        art = requests.get(art_url).json()
-        art_image = art['primaryImage']
-
-        with col2:
-            st.image(art_image,caption=art['title'])
-            LearnMore(i)
+        ArtAPI(i,col2)
        
     for i in searched_art_list[1][7:10]:
-        # art_url= f'https://collectionapi.metmuseum.org/public/collection/v1/objects/{i}'
-        art = requests.get(art_url).json()
-        art_image = art['primaryImage']
-
-        with col3:
-            st.image(art_image,caption=art['title'])
-            LearnMore(i)
+        ArtAPI(i,col3)
             
      
             
