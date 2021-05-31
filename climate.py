@@ -122,14 +122,17 @@ if art_word:
     col1, col2, col3 = st.beta_columns(3)
     
     for i in searched_art_list[1][0:4]:
-        count = 0
         art_url= f'https://collectionapi.metmuseum.org/public/collection/v1/objects/{i}'
         art = requests.get(art_url).json()
         with col1:
             st.image(art['primaryImage'],caption=art['title'])
             learn_more = st.checkbox("Learn More",key=i)
             if learn_more:
-                st.write('Artist: ' + art['artistDisplayName'])
+                if  art['artistDisplayName']: st.write('Artist: ' + art['artistDisplayName'])
+                else: st.write('Artist Unknown ')
+                if art['culture']: st.write('Culture: ' + art['culture']) 
+                else: st.write('Culture Unknown ')
+                
         
 
         
@@ -142,6 +145,12 @@ if art_word:
         with col2:
             st.image(art_image,caption=art['title'])
             # col2.subheader(art['title'])
+            learn_more = st.checkbox("Learn More",key=i)
+            if learn_more:
+                if  art['artistDisplayName']: st.write('Artist: ' + art['artistDisplayName'])
+                else: st.write('Artist Unknown ')
+                if art['culture']: st.write('Culture: ' + art['culture']) 
+                else: st.write('Culture Unknown ')
             
     for i in searched_art_list[1][7:10]:
         art_url= f'https://collectionapi.metmuseum.org/public/collection/v1/objects/{i}'
@@ -150,6 +159,12 @@ if art_word:
 
         with col3:
             st.image(art_image,caption=art['title'])
+            learn_more = st.checkbox("Learn More",key=i)
+            if learn_more:
+                if  art['artistDisplayName']: st.write('Artist: ' + art['artistDisplayName'])
+                else: st.write('Artist Unknown ')
+                if art['culture']: st.write('Culture: ' + art['culture']) 
+                else: st.write('Culture Unknown ')
             
      
             
