@@ -11,6 +11,7 @@ import urllib.request
 import numpy as np
 import random
 
+st.set_page_config(layout="wide")
 st.title('All in One Application')
 
 
@@ -80,16 +81,16 @@ def SelectArt(art_id):
             if art_image:
                 st.image(
                             art_image,
-                            width=200, # Manually Adjust the width of the image as per requirement
+                            width=300, # Manually Adjust the width of the image as per requirement
                         )
-            # if art_title: st.write('Title: ' +art_title)
-            # else: st.write('Title Unknown ')
-            # if art_department: st.write('Department: ' + art_department)
-            # else: st.write('Department Unknown ')
-            # if artist: st.write('Artist: ' + artist)
-            # else: st.write('Artist Unknown ')
-            # if art_culture: st.write('Culture: ' + art_culture) 
-            # else: st.write('Culture Unknown ')
+            if art_title: st.write('Title: ' +art_title)
+            else: st.write('Title Unknown ')
+            if art_department: st.write('Department: ' + art_department)
+            else: st.write('Department Unknown ')
+            if artist: st.write('Artist: ' + artist)
+            else: st.write('Artist Unknown ')
+            if art_culture: st.write('Culture: ' + art_culture) 
+            else: st.write('Culture Unknown ')
         elif not art_image:
             st.error("Sorry no image available")
     
@@ -100,6 +101,13 @@ st.header('Search For An Art Work')
 art_word = st.text_input("Enter a word of an art you would like to see")
 search_art_url = f'https://collectionapi.metmuseum.org/public/collection/v1/search?q={art_word}'
 
+
+# html_temp ='''
+# <div style="width:80%">{gallery}</div>
+
+# '''
+
+# st.markdown(html_temp.format(), unsafe_allow_html=True)
 if art_word:
     art_search_request = requests.get(search_art_url).json()
     total_art_pieces = art_search_request['total']
@@ -111,25 +119,37 @@ if art_word:
             searched_art_list.append(v)
 
 
-    # col1, col2,col3 = st.beta_columns((2,1,1))
-    # col1.write(SelectArt(searched_art_list[1][0])),col2.write(SelectArt(searched_art_list[1][2])),  col3.write(SelectArt(searched_art_list[1][3]))
+    col1, col2, col3 = st.beta_columns(3)
     
-    col1, col2 = st.beta_columns(2)
-    
-    for i in searched_art_list[1][0:3]:
+    for i in searched_art_list[1][0:4]:
+        count = 0
         art_url= f'https://collectionapi.metmuseum.org/public/collection/v1/objects/{i}'
         art = requests.get(art_url).json()
-        art_image = art['primaryImage']
         with col1:
-            st.image(art_image)
+            st.image(art['primaryImage'],caption=art['title'])
+            learn_more = st.checkbox("Learn More",key=i)
+            if learn_more:
+                st.write('Artist: ' + art['artistDisplayName'])
+        
+
+        
             
-    for i in searched_art_list[1][3:6]:
+    for i in searched_art_list[1][4:7]:
         art_url= f'https://collectionapi.metmuseum.org/public/collection/v1/objects/{i}'
         art = requests.get(art_url).json()
         art_image = art['primaryImage']
 
         with col2:
-            st.image(art_image)
+            st.image(art_image,caption=art['title'])
+            # col2.subheader(art['title'])
+            
+    for i in searched_art_list[1][7:10]:
+        art_url= f'https://collectionapi.metmuseum.org/public/collection/v1/objects/{i}'
+        art = requests.get(art_url).json()
+        art_image = art['primaryImage']
+
+        with col3:
+            st.image(art_image,caption=art['title'])
             
      
             
