@@ -1,3 +1,4 @@
+from typing import List, Text
 from requests.api import request
 import streamlit as st
 import pandas as pd
@@ -7,6 +8,13 @@ import requests
 from PIL import Image
 import numpy as np
 import random
+import tweepy
+from textblob import TextBlob
+import preprocessor as p
+from preprocessor.api import clean, tokenize, parse
+import statistics
+
+
 
 st.set_page_config(layout="wide")
 st.title('All in One Application')
@@ -148,18 +156,62 @@ if art_word:
             
 st.write('---------------------------------------------')
 
-# url = 'https://random.dog/woof.json'
+st.header('Cheer up with these dogs')
+
+
 dog_image_link = []
 random_dog_request = requests.get('https://random.dog/woof.json').json()
 random_dog_request
 for i in random_dog_request.values():
     dog_image_link.append(i)
-dog_image_link[1]
 
 
+random_dog = st.button('Random Dog',key="2")
+if random_dog:
+    st.image(dog_image_link[1],width=300,)
 
-            
+st.write('---------------------------------------------')
 
-            
+
+consumer_key = ""
+consumer_secret = ""
+
+access_token = ''
+access_token_secret = ''
+auth= tweepy.OAuthHandler(consumer_key,consumer_secret)
+auth.set_access_token(access_token,access_token_secret)
+api = tweepy.API(auth)
+
+
+st.header('Cant decide what to eat? Let twitter decide for you! ') 
+
+def get_tweets(food):
+    public_tweets = api.search(food)
+    all_tweets = []
+    sentiment_score = []
+    for tweet in public_tweets:
+        all_tweets.append(tweet.text)
+    for tweet in all_tweets:
+        blob = TextBlob(tweet)
+        sentiment_score.append(blob.sentiment.polarity)
+    average_score = statistics.mean(sentiment_score)
+    return average_score
+
+food1 = st.text_input('Enter one food item you are thinking of trying')
+food_2_entered = False
+if food1: 
+    food1_average_sentiment = get_tweets(food1)
+    food2 = st.text_input('Enter another food item you are thinking of trying')
+    if food2:
+        food_2_entered= True
+    
+if food_2_entered == True:
+    food2_average_sentiment = get_tweets(food2)
+
+    if (food1_average_sentiment > food2_average_sentiment):
+        st.write(f'Twitter users seem to prefer {food1} more than {food2}')
+    if (food1_average_sentiment < food2_average_sentiment):
+        st.write(f'Twitter users seem to prefer {food2} more than {food1}')
+
 
 
