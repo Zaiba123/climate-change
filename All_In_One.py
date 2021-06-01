@@ -11,7 +11,6 @@ import random
 import tweepy
 from textblob import TextBlob
 import preprocessor as p
-from preprocessor.api import clean, tokenize, parse
 import statistics
 
 
@@ -62,7 +61,7 @@ st.header('Enjoy these Art pieces')
 st.markdown('''**Move the slider to see an art piece** ''')
 
 #Allows user to select a art id they want to see 
-art_number = st.slider('Art Number', 1, 4000)
+art_number = st.slider('Art Number', 1000, 6000)
 
 def SelectArt(art_id):
     art_id = str(art_id)
@@ -148,10 +147,10 @@ if art_word:
     for i in searched_art_list[1][0:4]:
         ArtAPI(i,col1)
             
-    for i in searched_art_list[1][4:7]:
+    for i in searched_art_list[1][4:8]:
         ArtAPI(i,col2)
 
-    for i in searched_art_list[1][7:10]:
+    for i in searched_art_list[1][8:12]:
         ArtAPI(i,col3)
             
 st.write('---------------------------------------------')
@@ -160,14 +159,12 @@ st.header('Cheer up with these dogs')
 
 
 dog_image_link = []
-random_dog_request = requests.get('https://random.dog/woof.json').json()
-random_dog_request
-for i in random_dog_request.values():
-    dog_image_link.append(i)
-
 
 random_dog = st.button('Random Dog',key="2")
 if random_dog:
+    random_dog_request = requests.get('https://random.dog/woof.json').json()
+    for i in random_dog_request.values():
+        dog_image_link.append(i)
     st.image(dog_image_link[1],width=300,)
 
 st.write('---------------------------------------------')
@@ -178,6 +175,9 @@ consumer_secret = ""
 
 access_token = ''
 access_token_secret = ''
+
+
+
 auth= tweepy.OAuthHandler(consumer_key,consumer_secret)
 auth.set_access_token(access_token,access_token_secret)
 api = tweepy.API(auth)
