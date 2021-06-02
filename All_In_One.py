@@ -12,6 +12,11 @@ import tweepy
 from textblob import TextBlob
 import preprocessor as p
 import statistics
+import matplotlib.pyplot as plt
+from pandas import DataFrame
+from IPython.core.display import HTML
+
+
 
 
 
@@ -213,5 +218,21 @@ if food_2_entered == True:
     if (food1_average_sentiment < food2_average_sentiment):
         st.write(f'Twitter users seem to prefer {food2} more than {food1}')
 
+st.write('---------------------------------------------')
+
+r = requests.get('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false')  #to timeout on request 
+r_data = r.json()
+
+data_list = []
+image_list = []
+
+for i in range(len(r_data)):
+    data_list.append((r_data[i]["name"],r_data[i]["symbol"],r_data[i]["current_price"],r_data[i]["high_24h"],r_data[i]["low_24h"],"{:,}".format(r_data[i]["market_cap"])))
 
 
+for i in range(len(r_data)):
+    image_list.append((r_data[i]["image"]))
+
+df = DataFrame (data_list,columns=['Name','Symbol','Current Price','Highest Price in 24hrs','Lowest Price in 24hrs','Market Cap'])
+
+df
