@@ -226,12 +226,13 @@ r_data = r.json()
 data_list = []
 image_list = []
 
+
 for i in range(len(r_data)):
     data_list.append((r_data[i]["name"],r_data[i]["symbol"],r_data[i]["current_price"],r_data[i]["high_24h"],r_data[i]["low_24h"],"{:,}".format(r_data[i]["market_cap"])))
 
 
-for i in range(len(r_data)):
-    image_list.append((r_data[i]["image"]))
+# for i in range(len(r_data)):
+#     image_list.append((r_data[i]["image"]))
 
 df = DataFrame (data_list,columns=['Name','Symbol','Current Price','Highest Price in 24hrs','Lowest Price in 24hrs','Market Cap'])
 
